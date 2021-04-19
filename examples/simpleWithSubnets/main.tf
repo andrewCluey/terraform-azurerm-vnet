@@ -3,16 +3,16 @@ provider "azurerm" {
 }
 
 locals {
-  project_code = "ps1234"
+  project_code = "psacdev"
 }
 
 resource "azurerm_resource_group" "project_group" {
-  name     = "project_group"
+  name     = "project_dev_group"
   location = "UK South"
 }
 
 module "vnet_simple" {
-  source = "../../../terraform-azurerm-vnet"
+  source = "../../"
   #source  = "andrewCluey/vnet/azurerm"
   #version = "1.0.0"
 
@@ -22,12 +22,11 @@ module "vnet_simple" {
   location_short      = "uks"
   resource_group_name = azurerm_resource_group.project_group.name
   vnet_cidr           = ["10.0.0.0/22"]
-  dns_servers         = ["10.20.0.50", "10.20.0.51"] # Not required if using Azure provided DNS.
 }
 
 
 module "simple_subnet" {
-  source = "../../"
+  source = "../../../terraform-azurerm-subnet"
 
   environment          = "dev"
   project_code         = local.project_code
@@ -44,7 +43,5 @@ module "simple_subnet" {
       }
     ]
   }
-
-  route_table_name  = "default"
   service_endpoints = ["Microsoft.Storage", "Microsoft.KeyVault", "Microsoft.ServiceBus", "Microsoft.Web"]
 }
