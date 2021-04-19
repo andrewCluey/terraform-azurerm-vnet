@@ -1,7 +1,7 @@
 locals {
   name_prefix = var.name_prefix != "" ? replace(var.name_prefix, "/[a-z0-9]$/", "$0-") : ""
   vnet_name   = lower("${local.name_prefix}-${var.project_code}-${var.location_short}-${var.environment}")
-  module_tag  = {
+  module_tag = {
     "module" = basename(abspath(path.module))
   }
   default_tags = {

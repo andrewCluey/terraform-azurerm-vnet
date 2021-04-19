@@ -32,7 +32,7 @@ variable "project_code" {
   type        = string
   description = "The code assigned to the project"
   validation {
-    condition     = can(regex("^[a-zA-Z0-9]{1,5}$", var.project_code))
+    condition     = can(regex("^[a-zA-Z0-9]{1,8}$", var.project_code))
     error_message = "The project code should be without spaces and less than 8 characters."
   }
 }
@@ -48,10 +48,10 @@ variable "vnet_cidr" {
   description = "description"
 }
 
-variable "vnet_dns_servers" {
+variable "dns_servers" {
   type        = list(string)
   description = "Optional. Custom DNS Servers to assign to the new vNet."
-  default     = null 
+  default     = null
 }
 
 variable "tags" {
