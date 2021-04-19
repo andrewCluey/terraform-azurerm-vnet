@@ -12,9 +12,8 @@ resource "azurerm_resource_group" "project_group" {
 }
 
 module "vnet_simple" {
-  source = "../../"
-  #source  = "andrewCluey/vnet/azurerm"
-  #version = "1.0.0"
+  source  = "andrewCluey/vnet/azurerm"
+  version = "0.1.0"
 
   project_code        = local.project_code
   environment         = "dev"
