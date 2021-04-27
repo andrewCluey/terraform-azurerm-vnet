@@ -23,7 +23,7 @@ variable "environment" {
   type        = string
   description = "The staging environment where the new vNet will be deployed. For example 'Dev'"
   validation {
-    condition     = can(regex("^[a-zA-Z0-9]{1,5}$", var.environment))
+    condition     = can(regex("^[a-zA-Z0-9]{1,6}$", var.environment))
     error_message = "The environment name should be without spaces and less than 5 characters."
   }
 }
@@ -40,7 +40,6 @@ variable "project_code" {
 variable "resource_group_name" {
   type        = string
   description = "The name of the Resource Group where the new vNet will be created."
-  default     = "type"
 }
 
 variable "vnet_cidr" {
