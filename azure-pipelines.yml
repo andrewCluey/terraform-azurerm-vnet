@@ -1,0 +1,39 @@
+trigger:
+- dev
+variables:
+- group: 'terraform-module-validation'
+pool:
+  vmImage: 'ubuntu-20.04'
+  
+jobs:
+  - job: Validate
+    timeoutInMinutes: 300
+    steps:
+      - task: TerraformInstaller@0
+        inputs:
+          terraformVersion: '0.15.0'
+      - bash: |
+          find $(Build.SourcesDirectory)/ -type f -name 'main.tf' -exec sed -i 's~git::https://dev.azure.com~git::https://pat:$(System.AccessToken)@dev.azure.com~g' {} \;
+        displayName: 'Token Replace'
+  
+      - bash: |
+          terraform init -backend=false
+          terraform validate
+        displayName: 'Terraform Validate'
+        workingDirectory: $(workingDirectory)
+        
+      - bash: |
+          curl --location https://github.com/accurics/terrascan/releases/download/v1.4.0/terrascan_1.4.0_Linux_x86_64.tar.gz --output terrascan.tar.gz
+          tar xzf terrascan.tar.gz
+          sudo install terrascan /usr/local/bin
+          terrascan version
+        displayName: 'Install Terrascan v1.4'
+        workingDirectory: $(workingDirectory)
+  
+      - bash: |
+          terrascan scan -v
+          scan = terrascan scan -v
+          echo "##vso[task.setvariable variable=Terrascan_output;]$scan"
+          $scan
+        displayName: 'Run security scan against Module'
+        workingDirectory: $(workingDirectory)
