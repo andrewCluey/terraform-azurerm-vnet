@@ -1,8 +1,7 @@
 # variables
-variable "name_prefix" {
+variable "vnet_name" {
   type        = string
-  description = "Optional. The name prefix to use for the vNet. Defaults to 'vn'"
-  default     = "vn"
+  description = "The name to assignb to the new vNet."
 }
 
 variable "location" {
@@ -10,32 +9,6 @@ variable "location" {
   description = "The Azure region where the vNet will be created"
 }
 
-variable "location_short" {
-  type        = string
-  description = "An abbreviation to use for the location. Must be less than 4 characters."
-  validation {
-    condition     = can(regex("^[a-zA-Z0-9]{1,4}$", var.location_short))
-    error_message = "Sorry, but the short location abbreviation should be without spaces and less than 4 characters."
-  }
-}
-
-variable "environment" {
-  type        = string
-  description = "The staging environment where the new vNet will be deployed. For example 'Dev'"
-  validation {
-    condition     = can(regex("^[a-zA-Z0-9]{1,6}$", var.environment))
-    error_message = "The environment name should be without spaces and less than 5 characters."
-  }
-}
-
-variable "project_code" {
-  type        = string
-  description = "The code assigned to the project"
-  validation {
-    condition     = can(regex("^[a-zA-Z0-9]{1,8}$", var.project_code))
-    error_message = "The project code should be without spaces and less than 8 characters."
-  }
-}
 
 variable "resource_group_name" {
   type        = string
