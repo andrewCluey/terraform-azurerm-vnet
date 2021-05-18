@@ -14,7 +14,7 @@ locals {
     "module" = basename(abspath(path.module))
   }
 
-  tags = merge(var.tags, local.module_tag, local.default_tags)
+  tags = merge(var.tags, local.module_tag)
 }
 
 resource "azurerm_virtual_network" "main_vnet" {
